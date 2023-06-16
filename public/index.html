@@ -3,11 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acceso denegado</title>
+    <title>Rest Server</title>
+
+    <style>
+        .btn-google-signout {
+            margin-top: 24px; 
+            background: none; 
+            padding: 8px; 
+            border: 1px solid #cecece;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .btn-google-signout:hover {
+            background: #f7f7f7;
+        }
+        .btn-google-signout:active {
+            transform: scale(0.98);
+        }
+
+    </style>
 </head>
 <body>
     
-    <h1>¡Acceso denegado!</h1>
+    <h1>Google SignIn</h1>
+    <hr>
+    
+    <div id="g_id_onload"
+        data-client_id="962274413403-uhdjtvskuibateki7ui3qsmagfjs5nri.apps.googleusercontent.com"
+        data-auto_prompt="false"
+        data-callback="handleCredentialResponse"
+    >
+    </div>
+    <div class="g_id_signin"
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="sign_in_with"
+        data-shape="rectangular"
+        data-logo_alignment="left">
+    </div>
+
+
+    <button id="google_signout" class="btn-google-signout">
+        Google SignOut
+    </button>
+
+
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        function handleCredentialResponse(response) {
+
+            // Google Token
+            // console.log('id_token: ', response.credential );
+
+            const body = { id_token: response.credential }
+
+            fetch('http://localhost:8080/api/auth/google',{ 
+                method: 'POST', 
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify(body)
+            })
+            .then( resp => resp.json() )
+            .then( result => {
+                console.log( result )
+                localStorage.setItem('google-cafe-email', result.usuario.correo)
+            })
+            .catch( console.warn )
+
+        }
+
+
+        // Cerrar Sesión de google
+        const btnSignOut = document.querySelector('#google_signout')
+        btnSignOut.onclick = () => {
+
+            const emailActive = localStorage.getItem('google-cafe-email') || null
+            
+            if( !emailActive ){
+                return
+            }
+
+            google.accounts.id.disableAutoSelect()
+
+
+            google.accounts.id.revoke( emailActive, done => {
+                localStorage.removeItem('google-cafe-email')
+                location.reload()
+            })
+        }
+
+    </script>
 
 </body>
 </html>
