@@ -1,11 +1,14 @@
 const { request, response } = require("express");
+const { ObjectId } = require("mongoose").Types;
+
+
 const { Producto } = require("../models");
 
 
 
 const obtenerProductos = async( req = request, res = response) => {
 
-    const { pagina = 1, cantidad = 5 } = req.query
+    const { pagina = 1, cantidad = 5, categoria='' } = req.query
 
     let paginaNum = Number( pagina )
     let cantidadNum = Number( cantidad )
@@ -21,7 +24,18 @@ const obtenerProductos = async( req = request, res = response) => {
     const desde = ( paginaNum - 1 ) * cantidadNum
     const limite = cantidadNum
 
-    const query = { estado: true }
+    let query = { estado: true }
+
+
+    if( categoria ){
+        if( ObjectId.isValid( categoria ) ){
+            query = { ...query, categoria: categoria }
+        }else {
+            return res.status(400).json({
+                msg: 'ID de Categoría no válido'
+            })
+        }
+    }
 
     try {
         
