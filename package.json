@@ -21,6 +21,7 @@
     "google-auth-library": "^8.8.0",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^7.2.4",
+    "socket.io": "^4.7.0",
     "uuid": "^9.0.0"
   }
 }
