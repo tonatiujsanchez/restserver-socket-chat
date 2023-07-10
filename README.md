@@ -1,3 +1,13 @@
-# RESTServer - BASE 
+# RESTServer + Socket Chat
 
-__RESTServer base de Node.js con Express__
+__RESTServer con Socket Chat desarrollado con Node.js__
+
+ ```
+    - Node.js
+    - Express,
+    - Socket.io
+    - MongoDB
+    - Mongoose
+    - JWT
+    - Google Sign in
+ ```
