@@ -1,7 +1,11 @@
 
 // https://restserver-nodejs.up.railway.app/   :: Production
-
 const formulario = document.querySelector('form')
+
+const url = ( window.location.hostname.includes('localhost') )
+    ? 'http://localhost:8080/api/auth'
+    : 'https://restserver-nodejs.up.railway.app/api/auth'
+
 
 formulario.addEventListener('submit', (ev) => {
     ev.preventDefault()
@@ -14,7 +18,7 @@ formulario.addEventListener('submit', (ev) => {
         }
     }
 
-    fetch('http://localhost:8080/api/auth/login', {
+    fetch(`${url}/login`, {
         method: 'POST',
         body: JSON.stringify(formData),
         headers: {'Content-Type': 'application/json'}
@@ -27,6 +31,8 @@ formulario.addEventListener('submit', (ev) => {
 
         localStorage.setItem('google-cafe-token', token)
         localStorage.setItem('google-cafe-email', usuario.correo)
+
+        window.location = 'chat.html'
 
     })
     .catch( err => {
@@ -42,7 +48,7 @@ function handleCredentialResponse(response) {
 
     const body = { id_token: response.credential }
 
-    fetch('http://localhost:8080/api/auth/google', {
+    fetch(`${url}/google`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -55,6 +61,9 @@ function handleCredentialResponse(response) {
             console.log({token: result.token});
             localStorage.setItem('google-cafe-token', result.token)
             localStorage.setItem('google-cafe-email', result.usuario.correo)
+
+            window.location = 'chat.html'
+
         })
         .catch(console.warn)
 
@@ -73,8 +82,8 @@ btnSignOut.onclick = () => {
 
     google.accounts.id.disableAutoSelect()
 
-
     google.accounts.id.revoke(emailActive, done => {
+        localStorage.removeItem('google-cafe-token')
         localStorage.removeItem('google-cafe-email')
         location.reload()
     })

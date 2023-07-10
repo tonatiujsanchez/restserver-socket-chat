@@ -5,10 +5,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Socket - Chat</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
-<body class="container">
-    
-    
+<body>
+    <div class="w-100 d-flex align-items-center justify-content-between gap-3 shadow-sm px-5">
+        <h1 class="text-center mt-3 fs-3"></h1>
+        <button
+            id="btnSalir" 
+            class="btn btn-dark"
+        >
+            Cerrar Sesión
+        </button>
+    </div>
+
+    <main class="row mt-5 container mx-auto">
+        <!-- Left -->
+        <div class="col-sm-6">
+            <section class="mb-5">
+                <h2>Enviar mensaje</h2>
+                <hr>
+                <input 
+                    type="text"
+                    id="textUid"
+                    class="form-control mb-2"
+                    placeholder="uid"
+                    autocomplete="off"
+                >
+                <input 
+                    type="text"
+                    id="textMensaje"
+                    class="form-control mb-2"
+                    placeholder="Mensaje"
+                    autocomplete="off"
+                >
+            </section>
+            <section>
+                <h2>Usuarios</h2>
+                <hr>
+                
+                <ul id="ulUsuarios"></ul>
+            </section>
+        
+        </div>
+
+
+        <!-- Right -->
+        <div class="col-sm-6">
+            <h2 class="text-center">Chat Completo</h2>
+            <hr>
+            <ul id="ulMensajes">
+
+            </ul>
+        </div>
+    </main>
 
     <script src="./socket.io/socket.io.js"></script>
     <script src="./js/chat.js"></script>

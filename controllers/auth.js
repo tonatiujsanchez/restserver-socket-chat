@@ -96,12 +96,27 @@ const googleSignIn = async( req = request, res = response ) => {
             msg: 'El token no se pudo veficar'
         })
     }
+}
 
+
+const renovarToken = async( req = request, res = response ) => {
+
+    const { usuarioAutenticado } = req
+
+    const token = await generarJWT( usuarioAutenticado.id )
+
+
+    res.json({
+        usuario: usuarioAutenticado,
+        token
+    })
 
 }
 
 
+
 module.exports = {
     login,
-    googleSignIn
+    googleSignIn,
+    renovarToken
 }
